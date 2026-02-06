@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Inversion Boglehead para Chile</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:#fff;color:#1a1a1a;line-height:1.7;-webkit-font-smoothing:antialiased}
+
+  @media print{
+    body{font-size:11px}
+    .page-break{page-break-before:always}
+    .no-print{display:none}
+    .container{max-width:100%;padding:20px}
+  }
+
+  .container{max-width:740px;margin:0 auto;padding:60px 32px 80px}
+
+  /* Typography */
+  h1{font-size:36px;font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:8px}
+  h2{font-size:22px;font-weight:700;letter-spacing:-.5px;margin-top:56px;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #1a1a1a}
+  h3{font-size:16px;font-weight:700;margin-top:32px;margin-bottom:12px}
+  p{margin-bottom:14px;color:#333}
+  .subtitle{font-size:16px;color:#888;font-weight:400;margin-bottom:4px}
+  .date{font-size:12px;color:#bbb;margin-bottom:48px}
+  .lead{font-size:17px;color:#555;line-height:1.8;margin-bottom:32px;border-left:3px solid #1a1a1a;padding-left:20px}
+  strong{color:#1a1a1a}
+  small{font-size:12px;color:#999}
+
+  /* Lists */
+  ul,ol{margin-bottom:16px;padding-left:24px;color:#333}
+  li{margin-bottom:6px}
+  li strong{font-weight:600}
+
+  /* Cards */
+  .card{background:#fafafa;border:1px solid #eee;border-radius:14px;padding:24px;margin-bottom:16px}
+  .card-dark{background:#1a1a1a;color:#fff;border:none}
+  .card-dark p,.card-dark li{color:#ccc}
+  .card-dark strong{color:#fff}
+  .card-dark .card-tag{background:#333;color:#aaa}
+  .card-accent{border-left:4px solid #007aff;background:#f8faff}
+  .card-green{border-left:4px solid #34c759;background:#f6fdf8}
+  .card-title{font-size:15px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .card-tag{display:inline-block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;padding:3px 8px;border-radius:5px;background:#eee;color:#888}
+  .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:600px){.card-grid{grid-template-columns:1fr}}
+
+  /* Tables */
+  table{width:100%;border-collapse:collapse;margin-bottom:20px;font-size:14px}
+  th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#999;padding:10px 14px;border-bottom:2px solid #1a1a1a;font-weight:600}
+  th.r{text-align:right}
+  td{padding:14px;border-bottom:1px solid #f0f0f0}
+  td.r{text-align:right}
+  tr:last-child td{border-bottom:2px solid #1a1a1a}
+  .ticker{font-weight:700;font-size:15px}
+  .desc{font-size:12px;color:#888;font-weight:400}
+
+  /* Allocation visual */
+  .alloc-bar{display:flex;height:44px;border-radius:10px;overflow:hidden;margin-bottom:10px}
+  .alloc-seg{display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+  .seg-1{background:#1a1a1a}
+  .seg-2{background:#4a4a4a}
+  .seg-3{background:#8a8a8a}
+  .seg-4{background:#007aff}
+  .seg-5{background:#34c759}
+  .alloc-legend{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:32px}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:#666}
+  .legend-dot{width:10px;height:10px;border-radius:3px}
+
+  /* Principle boxes */
+  .principle{display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-bottom:1px solid #f0f0f0}
+  .principle:last-child{border:none}
+  .principle-num{width:36px;height:36px;background:#1a1a1a;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+  .principle-text h4{font-size:14px;font-weight:700;margin-bottom:4px}
+  .principle-text p{font-size:13px;margin-bottom:0;color:#555}
+
+  /* Compare table */
+  .compare{font-size:13px}
+  .compare th{font-size:10px}
+  .compare td{padding:10px 12px;font-size:13px}
+  .highlight-row td{background:#f8faff}
+
+  /* Callout */
+  .callout{background:#fffbe6;border:1px solid #f5e6a3;border-radius:10px;padding:16px 20px;font-size:13px;margin-bottom:20px}
+  .callout strong{color:#8b6914}
+
+  /* Footer */
+  .footer{margin-top:64px;padding-top:24px;border-top:1px solid #eee;text-align:center;font-size:11px;color:#ccc}
+
+  /* TOC */
+  .toc{background:#fafafa;border:1px solid #eee;border-radius:14px;padding:24px 28px;margin-bottom:40px}
+  .toc-title{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#999;font-weight:600;margin-bottom:12px}
+  .toc a{display:block;text-decoration:none;color:#1a1a1a;font-size:14px;font-weight:500;padding:6px 0;border-bottom:1px solid #f0f0f0;transition:color .15s}
+  .toc a:last-child{border:none}
+  .toc a:hover{color:#007aff}
+  .toc .num{color:#999;font-size:12px;margin-right:8px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ============================================ -->
+<!-- COVER -->
+<!-- ============================================ -->
+<div class="subtitle">Estrategia de inversi&oacute;n para largo plazo</div>
+<h1>Gu&iacute;a Boglehead<br>para inversionistas en Chile</h1>
+<div class="date">2026</div>
+
+<p class="lead">
+  Una estrategia simple, probada y de bajo costo para construir riqueza a largo plazo.
+  Basada en los principios de John C. Bogle (fundador de Vanguard), adaptada
+  al contexto tributario y las herramientas disponibles en Chile.
+</p>
+
+<!-- TOC -->
+<div class="toc">
+  <div class="toc-title">Contenido</div>
+  <a href="#que-es"><span class="num">01</span> Qu&eacute; es la filosof&iacute;a Boglehead</a>
+  <a href="#principios"><span class="num">02</span> Los 7 principios fundamentales</a>
+  <a href="#estrategia"><span class="num">03</span> La estrategia: Core + Sat&eacute;lite</a>
+  <a href="#etfs"><span class="num">04</span> Los ETFs y por qu&eacute; cada uno</a>
+  <a href="#apv"><span class="num">05</span> APV: Ahorro Previsional Voluntario</a>
+  <a href="#tributario"><span class="num">06</span> Contexto tributario chileno</a>
+  <a href="#dca"><span class="num">07</span> Dollar Cost Averaging (DCA)</a>
+  <a href="#proyeccion"><span class="num">08</span> Proyecci&oacute;n a 10 y 20 a&ntilde;os</a>
+  <a href="#errores"><span class="num">09</span> Errores comunes a evitar</a>
+  <a href="#plan"><span class="num">10</span> Plan de acci&oacute;n paso a paso</a>
+</div>
+
+<!-- ============================================ -->
+<!-- QUE ES BOGLEHEAD -->
+<!-- ============================================ -->
+<h2 id="que-es">Qu&eacute; es la filosof&iacute;a Boglehead</h2>
+
+<p>
+  Los <strong>Bogleheads</strong> son una comunidad global de inversionistas que siguen los principios
+  de <strong>John C. Bogle</strong>, fundador de Vanguard Group y creador del primer fondo indexado
+  para inversionistas individuales en 1976.
+</p>
+
+<p>La tesis central es simple:</p>
+
+<div class="card card-dark">
+  <p style="font-size:16px;text-align:center;margin:0;font-weight:500">
+    &ldquo;No busques la aguja en el pajar. Compra el pajar entero.&rdquo;
+  </p>
+  <p style="text-align:center;font-size:12px;margin:8px 0 0;color:#888">&mdash; John C. Bogle</p>
+</div>
+
+<p>
+  En lugar de intentar ganarle al mercado eligiendo acciones individuales o timing perfecto,
+  la estrategia Boglehead propone <strong>comprar todo el mercado</strong> a trav&eacute;s de fondos indexados
+  de bajo costo, mantener la disciplina, y dejar que el inter&eacute;s compuesto haga el trabajo
+  durante d&eacute;cadas.
+</p>
+
+<h3>Datos que respaldan la estrategia</h3>
+<ul>
+  <li><strong>92% de los fondos activos</strong> no logran superar a su &iacute;ndice de referencia en periodos de 15+ a&ntilde;os (SPIVA Scorecard)</li>
+  <li>El S&amp;P 500 ha promediado <strong>~10% anual</strong> en los &uacute;ltimos 100 a&ntilde;os</li>
+  <li>La diferencia entre un fondo con 0.03% de fee y uno con 1.5% de fee puede ser <strong>millones de pesos</strong> en 30 a&ntilde;os</li>
+</ul>
+
+<!-- ============================================ -->
+<!-- PRINCIPIOS -->
+<!-- ============================================ -->
+<h2 id="principios">Los 7 principios fundamentales</h2>
+
+<div class="card" style="padding:8px 24px">
+  <div class="principle">
+    <div class="principle-num">1</div>
+    <div class="principle-text">
+      <h4>Invertir temprano y constantemente</h4>
+      <p>El tiempo en el mercado vence al timing del mercado. Cada mes que no inviertes es inter&eacute;s compuesto perdido.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num">2</div>
+    <div class="principle-text">
+      <h4>Diversificar ampliamente</h4>
+      <p>No apostar a un pa&iacute;s, sector o empresa. Comprar el mercado global reduce riesgo sin sacrificar retorno esperado.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num">3</div>
+    <div class="principle-text">
+      <h4>Minimizar costos</h4>
+      <p>Cada peso en comisiones es un peso que no crece. Elegir ETFs con expense ratios bajo 0.10% para el core.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num">4</div>
+    <div class="principle-text">
+      <h4>Mantener la simplicidad</h4>
+      <p>No necesitas 20 ETFs. Un portafolio de 3-5 instrumentos bien elegidos supera a la mayor&iacute;a de los portafolios complejos.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num">5</div>
+    <div class="principle-text">
+      <h4>No intentar predecir el mercado</h4>
+      <p>Nadie sabe qu&eacute; har&aacute; el mercado ma&ntilde;ana. DCA (invertir un monto fijo cada mes) elimina la emoci&oacute;n de la ecuaci&oacute;n.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num">6</div>
+    <div class="principle-text">
+      <h4>Mantener la disciplina en crisis</h4>
+      <p>Las ca&iacute;das del mercado son temporales y son oportunidades de compra. Vender en p&aacute;nico es el error m&aacute;s caro que existe.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num">7</div>
+    <div class="principle-text">
+      <h4>Aprovechar beneficios tributarios</h4>
+      <p>En Chile, el APV (R&eacute;gimen A o B) ofrece incentivos fiscales significativos. Usarlos es dinero gratis del Estado.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ESTRATEGIA -->
+<!-- ============================================ -->
+<h2 id="estrategia" class="page-break">La estrategia: Core + Sat&eacute;lite</h2>
+
+<p>
+  El portafolio Boglehead cl&aacute;sico usa 3 fondos: mercado total de EE.UU., mercado internacional, y bonos.
+  Para inversionistas j&oacute;venes con horizonte largo (20+ a&ntilde;os), se puede adaptar a un modelo
+  <strong>Core + Sat&eacute;lite</strong>:
+</p>
+
+<div class="card-grid">
+  <div class="card">
+    <div class="card-title">Core (65%) <span class="card-tag">Bajo riesgo relativo</span></div>
+    <p style="font-size:13px">Diversificaci&oacute;n global amplia. Miles de empresas de todos los sectores y pa&iacute;ses. Este es el motor silencioso del portafolio.</p>
+    <ul style="font-size:13px">
+      <li><strong>40%</strong> &mdash; Mercado total EE.UU.</li>
+      <li><strong>25%</strong> &mdash; Mercado internacional</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Sat&eacute;lite (15%) <span class="card-tag">Alto riesgo</span></div>
+    <p style="font-size:13px">Apuestas sectoriales con mayor volatilidad y potencial de retorno. Solo para quienes toleran ca&iacute;das de -40% o m&aacute;s sin vender.</p>
+    <ul style="font-size:13px">
+      <li><strong>10%</strong> &mdash; Semiconductores</li>
+      <li><strong>5%</strong> &mdash; Biotecnolog&iacute;a</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card card-green">
+  <div class="card-title">Jubilaci&oacute;n voluntaria (20%) <span class="card-tag">APV</span></div>
+  <p style="font-size:13px;margin:0">
+    Fondo mutuo de renta variable en APV (Ahorro Previsional Voluntario). Aprovecha el beneficio tributario
+    del Estado chileno. Se invierte en un fondo agresivo tipo &ldquo;Risky&rdquo; que internamente ya diversifica en varios ETFs.
+  </p>
+</div>
+
+<!-- Allocation bar -->
+<h3>Distribuci&oacute;n visual</h3>
+<div class="alloc-bar">
+  <div class="alloc-seg seg-1" style="width:40%">40%</div>
+  <div class="alloc-seg seg-2" style="width:25%">25%</div>
+  <div class="alloc-seg seg-3" style="width:20%">20%</div>
+  <div class="alloc-seg seg-4" style="width:10%">10%</div>
+  <div class="alloc-seg seg-5" style="width:5%">5%</div>
+</div>
+<div class="alloc-legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#1a1a1a"></div>VTI (40%)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#4a4a4a"></div>VXUS (25%)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#8a8a8a"></div>APV (20%)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#007aff"></div>SMH (10%)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#34c759"></div>XBI (5%)</div>
+</div>
+
+<h3>&iquest;C&oacute;mo adaptar los porcentajes?</h3>
+<p>
+  Los porcentajes son una gu&iacute;a, no una regla r&iacute;gida. Si tu presupuesto mensual es de <strong>$X CLP</strong>,
+  simplemente multiplica por el porcentaje:
+</p>
+<div class="card" style="font-size:13px;font-family:monospace;background:#f8f8f8">
+  <p style="margin:0">
+    VTI&nbsp;&nbsp;&nbsp;= X &times; 0.40<br>
+    VXUS&nbsp;&nbsp;= X &times; 0.25<br>
+    APV&nbsp;&nbsp;&nbsp;= X &times; 0.20<br>
+    SMH&nbsp;&nbsp;&nbsp;= X &times; 0.10<br>
+    XBI&nbsp;&nbsp;&nbsp;= X &times; 0.05
+  </p>
+</div>
+<p><small>Ejemplo: Si inviertes $300.000/mes &rarr; VTI $120K, VXUS $75K, APV $60K, SMH $30K, XBI $15K.</small></p>
+
+<!-- ============================================ -->
+<!-- ETFs -->
+<!-- ============================================ -->
+<h2 id="etfs" class="page-break">Los ETFs y por qu&eacute; cada uno</h2>
+
+<!-- VTI -->
+<div class="card" style="margin-bottom:20px">
+  <div class="card-title">VTI &mdash; Vanguard Total Stock Market ETF <span class="card-tag">Core 40%</span></div>
+  <table class="compare" style="margin-bottom:12px">
+    <tr><td style="width:140px;color:#888">Holdings</td><td><strong>3,600+ empresas</strong></td></tr>
+    <tr><td style="color:#888">Expense Ratio</td><td><strong>0.03%</strong> (uno de los m&aacute;s baratos del mundo)</td></tr>
+    <tr><td style="color:#888">Retorno hist&oacute;rico</td><td>~10% anual promedio (largo plazo)</td></tr>
+    <tr><td style="color:#888">Max Drawdown</td><td>-35% (crisis 2020)</td></tr>
+  </table>
+  <h4 style="font-size:13px;margin-bottom:6px">&iquest;Por qu&eacute; VTI y no VOO (S&amp;P 500)?</h4>
+  <p style="font-size:13px;margin:0">
+    VOO solo incluye las 500 empresas m&aacute;s grandes de EE.UU. VTI incluye <strong>todo</strong> el mercado
+    estadounidense: large, mid y small caps. Esto captura el &ldquo;small cap premium&rdquo; &mdash; hist&oacute;ricamente
+    las empresas peque&ntilde;as crecen m&aacute;s r&aacute;pido. VTI tiene 7 veces m&aacute;s empresas por el mismo costo (0.03%).
+    La pr&oacute;xima Apple o NVIDIA puede estar en una small cap que VOO no incluye.
+  </p>
+</div>
+
+<!-- VXUS -->
+<div class="card" style="margin-bottom:20px">
+  <div class="card-title">VXUS &mdash; Vanguard Total International Stock ETF <span class="card-tag">Core 25%</span></div>
+  <table class="compare" style="margin-bottom:12px">
+    <tr><td style="width:140px;color:#888">Holdings</td><td><strong>8,500+ empresas</strong> en 40+ pa&iacute;ses</td></tr>
+    <tr><td style="color:#888">Expense Ratio</td><td><strong>0.07%</strong></td></tr>
+    <tr><td style="color:#888">Retorno hist&oacute;rico</td><td>~7-8% anual promedio</td></tr>
+    <tr><td style="color:#888">Regiones</td><td>Europa ~40%, Asia-Pac&iacute;fico ~30%, Emergentes ~25%</td></tr>
+  </table>
+  <h4 style="font-size:13px;margin-bottom:6px">&iquest;Por qu&eacute; invertir fuera de EE.UU.?</h4>
+  <p style="font-size:13px;margin:0">
+    EE.UU. es el 60% del mercado global, pero <strong>no es el 100%</strong>. En la d&eacute;cada 2000-2010,
+    los mercados internacionales superaron al S&amp;P 500. VXUS te da acceso a Toyota, Samsung,
+    Nestl&eacute;, TSMC, ASML, y miles m&aacute;s. Si EE.UU. tiene una d&eacute;cada perdida (ya pas&oacute; antes),
+    VXUS amortigua el golpe.
+  </p>
+</div>
+
+<!-- SMH -->
+<div class="card" style="margin-bottom:20px">
+  <div class="card-title">SMH &mdash; VanEck Semiconductor ETF <span class="card-tag">Sat&eacute;lite 10%</span></div>
+  <table class="compare" style="margin-bottom:12px">
+    <tr><td style="width:140px;color:#888">Holdings</td><td><strong>26 empresas</strong> (concentrado)</td></tr>
+    <tr><td style="color:#888">Expense Ratio</td><td><strong>0.35%</strong></td></tr>
+    <tr><td style="color:#888">Top Holdings</td><td>NVIDIA (~20%), TSMC (~12%), Broadcom (~8%), ASML (~5%)</td></tr>
+    <tr><td style="color:#888">Max Drawdown</td><td>-45%</td></tr>
+  </table>
+  <h4 style="font-size:13px;margin-bottom:6px">&iquest;Por qu&eacute; semiconductores?</h4>
+  <p style="font-size:13px;margin:0">
+    Los semiconductores son la <strong>infraestructura invisible</strong> de la econom&iacute;a moderna.
+    Todo lo que es &ldquo;tech&rdquo; &mdash; inteligencia artificial, data centers, autos el&eacute;ctricos, smartphones,
+    cloud computing &mdash; requiere chips. SMH captura las empresas que <strong>fabrican los picos y las palas</strong>
+    de la fiebre del oro tecnol&oacute;gica. Es vol&aacute;til (puede caer -45%), pero tiene fundamentos s&oacute;lidos
+    respaldados por revenue real.
+  </p>
+  <div class="callout" style="margin-top:12px;margin-bottom:0">
+    <strong>SMH vs SOXX:</strong> SMH supera a SOXX porque concentra m&aacute;s peso en los ganadores
+    (NVIDIA, TSMC). En 2024: SMH +39% vs SOXX +13%. Misma tesis, mejor ejecuci&oacute;n.
+  </div>
+</div>
+
+<!-- XBI -->
+<div class="card" style="margin-bottom:20px">
+  <div class="card-title">XBI &mdash; SPDR S&amp;P Biotech ETF <span class="card-tag">Sat&eacute;lite 5%</span></div>
+  <table class="compare" style="margin-bottom:12px">
+    <tr><td style="width:140px;color:#888">Holdings</td><td><strong>150+ empresas</strong> (equal-weight)</td></tr>
+    <tr><td style="color:#888">Expense Ratio</td><td><strong>0.35%</strong></td></tr>
+    <tr><td style="color:#888">Retornos recientes</td><td>2023: +7.6% / 2024: +1.0% / 2025: +35.9%</td></tr>
+    <tr><td style="color:#888">Max Drawdown</td><td>-64%</td></tr>
+    <tr><td style="color:#888">Correlaci&oacute;n con Nasdaq</td><td><strong>Baja (~0.45)</strong></td></tr>
+  </table>
+  <h4 style="font-size:13px;margin-bottom:6px">&iquest;Por qu&eacute; biotech como sat&eacute;lite?</h4>
+  <p style="font-size:13px;margin:0">
+    Tres razones: (1) <strong>Descorrelacionado</strong> &mdash; la biotecnolog&iacute;a se mueve por aprobaciones de la FDA,
+    ensayos cl&iacute;nicos y M&amp;A farmac&eacute;utica, no por ciclos de tech. (2) <strong>Equal-weight</strong> &mdash;
+    ninguna empresa supera el 2% del fondo, distribuyendo el riesgo. (3) <strong>Tendencia secular</strong> &mdash;
+    envejecimiento global, terapia g&eacute;nica (CRISPR), drogas GLP-1, y AI aplicada a descubrimiento de f&aacute;rmacos
+    son megatendencias que no dependen del ciclo tech.
+  </p>
+</div>
+
+<!-- Comparison table -->
+<h3>Tabla comparativa completa</h3>
+<table class="compare">
+  <thead>
+    <tr>
+      <th>ETF</th>
+      <th>Rol</th>
+      <th class="r">Fee</th>
+      <th class="r">Holdings</th>
+      <th class="r">Max Drawdown</th>
+      <th class="r">Asignaci&oacute;n</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="ticker">VTI</td>
+      <td class="desc">Mercado total EE.UU.</td>
+      <td class="r">0.03%</td>
+      <td class="r">3,600+</td>
+      <td class="r">-35%</td>
+      <td class="r"><strong>40%</strong></td>
+    </tr>
+    <tr>
+      <td class="ticker">VXUS</td>
+      <td class="desc">Internacional ex-US</td>
+      <td class="r">0.07%</td>
+      <td class="r">8,500+</td>
+      <td class="r">-33%</td>
+      <td class="r"><strong>25%</strong></td>
+    </tr>
+    <tr>
+      <td class="ticker">SMH</td>
+      <td class="desc">Semiconductores</td>
+      <td class="r">0.35%</td>
+      <td class="r">26</td>
+      <td class="r">-45%</td>
+      <td class="r"><strong>10%</strong></td>
+    </tr>
+    <tr>
+      <td class="ticker">XBI</td>
+      <td class="desc">Biotecnolog&iacute;a</td>
+      <td class="r">0.35%</td>
+      <td class="r">150+</td>
+      <td class="r">-64%</td>
+      <td class="r"><strong>5%</strong></td>
+    </tr>
+    <tr>
+      <td class="ticker">APV</td>
+      <td class="desc">Fondo mutuo agresivo</td>
+      <td class="r">~0.49%</td>
+      <td class="r">Multi-ETF</td>
+      <td class="r">Variable</td>
+      <td class="r"><strong>20%</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ============================================ -->
+<!-- APV -->
+<!-- ============================================ -->
+<h2 id="apv" class="page-break">APV: Ahorro Previsional Voluntario</h2>
+
+<p>
+  El <strong>APV</strong> es un mecanismo del Estado chileno que incentiva el ahorro para la jubilaci&oacute;n
+  con beneficios tributarios. Existen dos reg&iacute;menes:
+</p>
+
+<div class="card-grid">
+  <div class="card card-accent">
+    <div class="card-title">R&eacute;gimen A <span class="card-tag">Recomendado si renta baja-media</span></div>
+    <ul style="font-size:13px">
+      <li>El Estado deposita un <strong>15% de bonificaci&oacute;n</strong> sobre lo que aportes (hasta 6 UTM/a&ntilde;o)</li>
+      <li>Es literalmente <strong>dinero gratis</strong> del gobierno</li>
+      <li>Ideal si tu tramo de impuesto a la renta es bajo (ingreso imponible bajo ~$800K/mes aprox.)</li>
+      <li>Al jubilar, tributas sobre el monto retirado</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">R&eacute;gimen B <span class="card-tag">Para rentas altas</span></div>
+    <ul style="font-size:13px">
+      <li>Descuentas el aporte de tu <strong>base imponible</strong> (pagas menos impuestos hoy)</li>
+      <li>Conveniente si est&aacute;s en tramo alto (tasa marginal &gt;15%)</li>
+      <li>L&iacute;mite: 600 UF anuales</li>
+      <li>Al jubilar, tributas sobre el monto retirado</li>
+    </ul>
+  </div>
+</div>
+
+<h3>&iquest;D&oacute;nde invertir el APV?</h3>
+<p>
+  Para inversionistas j&oacute;venes con horizonte largo, se recomienda un <strong>fondo mutuo agresivo</strong>
+  (100% renta variable). Plataformas como Fintual ofrecen fondos APV con comisiones reducidas (~0.49%)
+  que internamente invierten en m&uacute;ltiples ETFs, proporcionando diversificaci&oacute;n autom&aacute;tica.
+</p>
+
+<div class="callout">
+  <strong>Importante:</strong> El APV no es lo mismo que la AFP. Tu AFP maneja tu ahorro obligatorio.
+  El APV es <strong>adicional y voluntario</strong>, con incentivos fiscales extra. Puedes tener ambos simult&aacute;neamente.
+</div>
+
+<h3>&iquest;Cu&aacute;nto aportar al APV?</h3>
+<p>
+  Para R&eacute;gimen A, el m&aacute;ximo bonificable es <strong>6 UTM al a&ntilde;o</strong> (~$420.000 CLP).
+  Un aporte mensual de ~$35.000-40.000 CLP optimiza el beneficio sin exceder el tope.
+  Todo lo que supere el tope sigue creciendo, pero sin bonificaci&oacute;n estatal adicional.
+</p>
+
+<!-- ============================================ -->
+<!-- TRIBUTARIO -->
+<!-- ============================================ -->
+<h2 id="tributario">Contexto tributario chileno</h2>
+
+<p>Entender los impuestos es crucial para maximizar el retorno neto. En Chile:</p>
+
+<div class="card" style="padding:8px 24px">
+  <div class="principle">
+    <div class="principle-num" style="background:#007aff">$</div>
+    <div class="principle-text">
+      <h4>ETFs v&iacute;a plataformas chilenas (ej. Fintual Acciones)</h4>
+      <p>Sin comisi&oacute;n de compra/venta. Las ganancias de capital tributan al <strong>25% (primera categor&iacute;a)</strong> al momento de vender. Las primeras <strong>30 UTM de ganancia anual est&aacute;n exentas</strong> (~$2.1M CLP).</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num" style="background:#34c759">%</div>
+    <div class="principle-text">
+      <h4>APV R&eacute;gimen A</h4>
+      <p>15% de bonificaci&oacute;n estatal sobre aportes (tope 6 UTM/a&ntilde;o). Al retirar antes de jubilar, devuelves la bonificaci&oacute;n + impuesto sobre ganancias. Al jubilar, tributas seg&uacute;n tabla de impuesto a la renta.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num" style="background:#af52de">&#9733;</div>
+    <div class="principle-text">
+      <h4>Fondos mutuos (no APV)</h4>
+      <p>Ganancias tributan al rescatar. Exenci&oacute;n de <strong>30 UTM anuales</strong> para fondos con &gt;10% en renta variable con presencia burs&aacute;til. Conveniente para ganancias moderadas.</p>
+    </div>
+  </div>
+</div>
+
+<div class="callout">
+  <strong>Estrategia fiscal:</strong> Usa la exenci&oacute;n de 30 UTM a tu favor. Si necesitas liquidez,
+  vende posiciones con ganancias bajo ese monto cada a&ntilde;o para pagar $0 en impuestos.
+</div>
+
+<!-- ============================================ -->
+<!-- DCA -->
+<!-- ============================================ -->
+<h2 id="dca" class="page-break">Dollar Cost Averaging (DCA)</h2>
+
+<p>
+  <strong>DCA</strong> significa invertir un <strong>monto fijo</strong> a <strong>intervalos regulares</strong>,
+  independiente de lo que haga el mercado. Es el pilar operacional de la estrategia Boglehead.
+</p>
+
+<h3>&iquest;Por qu&eacute; funciona?</h3>
+
+<div class="card-grid">
+  <div class="card card-sm">
+    <div class="card-title" style="font-size:13px">Cuando el mercado sube</div>
+    <p style="font-size:13px;margin:0">Compras menos acciones pero tu portafolio crece. Tu inversi&oacute;n existente genera ganancias.</p>
+  </div>
+  <div class="card card-sm">
+    <div class="card-title" style="font-size:13px">Cuando el mercado baja</div>
+    <p style="font-size:13px;margin:0">Compras <strong>m&aacute;s acciones al mismo precio</strong>. Estas acciones &ldquo;baratas&rdquo; ser&aacute;n las m&aacute;s rentables cuando el mercado se recupere.</p>
+  </div>
+</div>
+
+<p>
+  El DCA elimina la emoci&oacute;n y el timing. No necesitas saber si hoy es buen momento para comprar.
+  <strong>Siempre es buen momento si tu horizonte es 20+ a&ntilde;os.</strong>
+</p>
+
+<h3>Implementaci&oacute;n pr&aacute;ctica</h3>
+<ol>
+  <li>Define tu monto mensual total (ej. $200K CLP)</li>
+  <li>Divide seg&uacute;n los porcentajes de la estrategia</li>
+  <li>Configura aportes autom&aacute;ticos el mismo d&iacute;a cada mes</li>
+  <li>No mires los precios diariamente &mdash; revisa tu portafolio <strong>cada 3-6 meses</strong></li>
+  <li>Rebalancea si alguna posici&oacute;n se desv&iacute;a m&aacute;s de &plusmn;5% del target</li>
+</ol>
+
+<!-- ============================================ -->
+<!-- PROYECCION -->
+<!-- ============================================ -->
+<h2 id="proyeccion">Proyecci&oacute;n a 10 y 20 a&ntilde;os</h2>
+
+<p>Asumiendo un aporte constante de <strong>$200.000 CLP/mes</strong>, sin considerar aumentos salariales:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>A&ntilde;o</th>
+      <th class="r">Total aportado</th>
+      <th class="r">Conservador (7%)</th>
+      <th class="r">Moderado (10%)</th>
+      <th class="r">Optimista (12%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>1</strong></td><td class="r">$2,4M</td><td class="r">$2,5M</td><td class="r">$2,5M</td><td class="r">$2,6M</td></tr>
+    <tr><td><strong>3</strong></td><td class="r">$7,2M</td><td class="r">$8,1M</td><td class="r">$8,5M</td><td class="r">$8,9M</td></tr>
+    <tr><td><strong>5</strong></td><td class="r">$12,0M</td><td class="r">$14,5M</td><td class="r">$15,8M</td><td class="r">$16,8M</td></tr>
+    <tr><td><strong>10</strong></td><td class="r">$24,0M</td><td class="r">$35,1M</td><td class="r">$41,3M</td><td class="r">$46,5M</td></tr>
+    <tr><td><strong>15</strong></td><td class="r">$36,0M</td><td class="r">$63,9M</td><td class="r">$83,1M</td><td class="r">$100,7M</td></tr>
+    <tr><td><strong>20</strong></td><td class="r">$48,0M</td><td class="r">$104,8M</td><td class="r">$153,1M</td><td class="r">$199,8M</td></tr>
+  </tbody>
+</table>
+<p><small>* Valores en CLP. No considera inflaci&oacute;n, impuestos, tipo de cambio, ni aportes adicionales por aumentos salariales. Resultados reales variar&aacute;n.</small></p>
+
+<div class="card card-dark" style="text-align:center">
+  <p style="font-size:14px;margin:0">
+    Con $200K/mes al 10% anual, en <strong>20 a&ntilde;os</strong> tendr&iacute;as <strong>~$153M CLP</strong><br>
+    habiendo aportado solo $48M. El inter&eacute;s compuesto genera los otros <strong>$105M</strong>.
+  </p>
+</div>
+
+<!-- ============================================ -->
+<!-- ERRORES -->
+<!-- ============================================ -->
+<h2 id="errores" class="page-break">Errores comunes a evitar</h2>
+
+<div class="card" style="padding:8px 24px">
+  <div class="principle">
+    <div class="principle-num" style="background:#ff3b30">1</div>
+    <div class="principle-text">
+      <h4>Vender durante una ca&iacute;da</h4>
+      <p>El mercado ha ca&iacute;do 30%+ muchas veces en la historia y <strong>siempre se ha recuperado</strong>. Cada ca&iacute;da parece &ldquo;la definitiva&rdquo; mientras ocurre. Nunca lo es.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num" style="background:#ff3b30">2</div>
+    <div class="principle-text">
+      <h4>Intentar hacer timing</h4>
+      <p>&ldquo;Voy a esperar a que baje para comprar&rdquo; &mdash; en la pr&aacute;ctica, nadie aciert a consistentemente. El tiempo fuera del mercado cuesta m&aacute;s que cualquier ca&iacute;da.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num" style="background:#ff3b30">3</div>
+    <div class="principle-text">
+      <h4>Concentrar en una sola acci&oacute;n</h4>
+      <p>Apostar todo a NVIDIA, Tesla, o la moda del momento es jugar a la loter&iacute;a, no invertir. Diversificaci&oacute;n es protecci&oacute;n.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num" style="background:#ff3b30">4</div>
+    <div class="principle-text">
+      <h4>Ignorar las comisiones</h4>
+      <p>1% de fee anual parece poco, pero en 30 a&ntilde;os puede comerse el <strong>25-30%</strong> de tu patrimonio final. Cada punto base cuenta.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num" style="background:#ff3b30">5</div>
+    <div class="principle-text">
+      <h4>No tener fondo de emergencia</h4>
+      <p>Antes de invertir, ten <strong>3-6 meses de gastos</strong> en un fondo money market (conservador). Si no, una emergencia te obligar&aacute; a vender inversiones en el peor momento.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num" style="background:#ff3b30">6</div>
+    <div class="principle-text">
+      <h4>Revisar el portafolio diariamente</h4>
+      <p>Mirar los precios todos los d&iacute;as genera ansiedad y decisiones emocionales. Revisa cada 3-6 meses. Tu futuro yo te lo agradecer&aacute;.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PLAN -->
+<!-- ============================================ -->
+<h2 id="plan">Plan de acci&oacute;n paso a paso</h2>
+
+<div class="card" style="padding:8px 24px">
+  <div class="principle">
+    <div class="principle-num">1</div>
+    <div class="principle-text">
+      <h4>Arma tu fondo de emergencia</h4>
+      <p>3-6 meses de gastos mensuales en un fondo money market conservador. No tocar hasta emergencia real. Este es el fundamento de todo lo dem&aacute;s.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num">2</div>
+    <div class="principle-text">
+      <h4>Abre tu APV</h4>
+      <p>Elige R&eacute;gimen A (si renta baja-media) o B (si renta alta). Selecciona un fondo agresivo de renta variable. Configura aporte autom&aacute;tico mensual (20% de tu presupuesto).</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num">3</div>
+    <div class="principle-text">
+      <h4>Abre cuenta para ETFs</h4>
+      <p>Usa una plataforma con comisi&oacute;n $0 y acceso a ETFs de Vanguard/VanEck/SPDR. Verifica que ofrezca acciones fraccionarias para montos peque&ntilde;os.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num">4</div>
+    <div class="principle-text">
+      <h4>Configura tus compras mensuales</h4>
+      <p>Divide tu presupuesto seg&uacute;n los porcentajes: VTI (40%), VXUS (25%), SMH (10%), XBI (5%). Configura aportes autom&aacute;ticos o un recordatorio mensual fijo.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num">5</div>
+    <div class="principle-text">
+      <h4>Rebalancea cada 6 meses</h4>
+      <p>Revisa si alguna posici&oacute;n se desvi&oacute; &gt;5% del target. Si s&iacute;, compra m&aacute;s de lo que est&aacute; bajo y menos de lo que est&aacute; sobre. No vendas para rebalancear si puedes evitarlo.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num">6</div>
+    <div class="principle-text">
+      <h4>Aumenta aportes con cada aumento salarial</h4>
+      <p>Destina al menos el 50% de cada aumento de sueldo a inversiones. Tu estilo de vida puede crecer, pero tus inversiones deben crecer m&aacute;s r&aacute;pido.</p>
+    </div>
+  </div>
+  <div class="principle">
+    <div class="principle-num">7</div>
+    <div class="principle-text">
+      <h4>Mant&eacute;n la disciplina</h4>
+      <p>El mercado va a caer. Vas a tener miedo. No vendas. Sigue comprando. La riqueza se construye en las d&eacute;cadas, no en los d&iacute;as.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- FOOTER -->
+<!-- ============================================ -->
+<div class="footer">
+  <p style="margin-bottom:8px">2026</p>
+  <p>Este documento es educativo y no constituye asesor&iacute;a financiera profesional.</p>
+
+</div>
+
+</div>
+
+</body>
+</html>
