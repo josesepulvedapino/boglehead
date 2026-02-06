@@ -1,2 +1,3 @@
 # boglehead
-chilean boglehead investment
+
+[chilean boglehead investment](https://josesepulvedapino.github.io/boglehead/)
