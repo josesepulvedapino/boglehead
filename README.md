@@ -1,2 +1,2 @@
 # boglehead
-boglehead investment
+chilean boglehead investment
